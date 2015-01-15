@@ -4,7 +4,11 @@ require.config({
 
     paths: {
         'angular': '../bower_components/angular/angular',
-        'app': '../app/app'
+        'app': '../app/app',
+
+        'tunnel': '../app/objects/tunnel-object',
+        'enemy': '../app/objects/enemy-object',
+        'screen': '../app/objects/screen-object'
     },
 
     shim: {
@@ -26,18 +30,10 @@ define([
     'angular',
     'app',
 
-    '../app/controllers/screen-controller',
-    '../app/controllers/tunnel-controller',
-    //'../app/controllers/shoot-zone-controller',
+    'tunnel',
+    'enemy',
+    'screen'
 
-    '../app/directives/tunnel-directive',
-    '../app/directives/tunnels-group-directive',
-    '../app/directives/screen-directive',
-    //'../app/directives/shoot-zone-directive',
-
-    '../app/services/tunnel-service',
-    '../app/services/screen-service',
-    '../app/services/target-service'
 ], function( angular ){
 
     console.log( 'im at main' );

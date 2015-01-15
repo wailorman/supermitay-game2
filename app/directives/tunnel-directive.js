@@ -10,6 +10,8 @@ define([
         return {
             restrict: 'E',
 
+            transclude: true,
+
             scope: {
                 posX: '@',
                 posY: '@'

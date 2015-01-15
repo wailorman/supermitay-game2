@@ -10,6 +10,8 @@ define([
         return {
             restrict: 'E',
 
+            transclude: true,
+
             templateUrl: './app/views/tunnels-group-template.html'
         };
 

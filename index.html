@@ -13,7 +13,17 @@
 
 <screen-object>
 
-    <tunnels-group></tunnels-group>
+    <tunnel-object
+            ng-repeat="( tunnelIndex, tunnel ) in ScreenController.tunnels"
+            pos-x="{{ tunnel.coords.x }}"
+            pos-y="{{ tunnel.coords.y }}">
+
+        <enemy-object
+                index="{{ tunnelIndex }}">
+
+        </enemy-object>
+
+    </tunnel-object>
 
 </screen-object>
 
