@@ -1,0 +1,10 @@
+<div class="locations" ng-controller="LocationController as LocCtrl">
+
+    <location-object
+            ng-repeat="location in LocCtrl.locations"
+            pos-x="{{ location.coords.x }}"
+            pos-y="{{ location.coords.y }}">
+
+    </location-object>
+
+</div>

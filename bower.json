@@ -1,0 +1,25 @@
+{
+  "name": "supermitay-gameTwo",
+  "version": "0.1.0",
+  "authors": [
+    "wailorman <wailorman@gmail.com>"
+  ],
+  "main": "index.html",
+  "moduleType": [
+    "amd"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "requirejs": "~2.1.15",
+    "angular": "~1.3.9",
+    "requirejs-domready": "~2.0.1"
+  }
+}
