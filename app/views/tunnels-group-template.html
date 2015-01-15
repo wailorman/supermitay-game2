@@ -1,0 +1,10 @@
+<div class="tunnels" ng-controller="TunnelController as TunnelCtrl">
+
+    <tunnel-object
+            ng-repeat="tunnel in TunnelCtrl.tunnels"
+            pos-x="{{ tunnel.coords.x }}"
+            pos-y="{{ tunnel.coords.y }}">
+
+    </tunnel-object>
+
+</div>

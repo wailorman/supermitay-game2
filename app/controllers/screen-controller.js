@@ -11,7 +11,7 @@ define(
 
             var vm = this;
 
-            vm.locations = [
+            vm.tunnels = [
                 { x: 23, y: 10 },
                 { x: 23, y: 10 },
                 { x: 23, y: 10 },

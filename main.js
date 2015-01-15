@@ -26,16 +26,16 @@ define([
     'angular',
     'app',
 
-    '../app/controllers/screen-controller.js',
-    '../app/controllers/location-controller',
+    '../app/controllers/screen-controller',
+    '../app/controllers/tunnel-controller',
     //'../app/controllers/shoot-zone-controller',
 
-    '../app/directives/location-directive',
-    '../app/directives/locations-group-directive',
+    '../app/directives/tunnel-directive',
+    '../app/directives/tunnels-group-directive',
     '../app/directives/screen-directive',
     //'../app/directives/shoot-zone-directive',
 
-    '../app/services/location-service',
+    '../app/services/tunnel-service',
     '../app/services/screen-service',
     '../app/services/target-service'
 ], function( angular ){

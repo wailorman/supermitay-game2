@@ -2,10 +2,10 @@ define([
     'app'
 ], function ( app ) {
 
-    console.log( 'directive: locationObject' );
+    console.log( 'directive: tunnelObject' );
 
 
-    return app.directive( 'locationObject', function(){
+    return app.directive( 'tunnelObject', function(){
 
         return {
             restrict: 'E',
@@ -15,7 +15,7 @@ define([
                 posY: '@'
             },
 
-            templateUrl: './app/views/location-template.html'
+            templateUrl: './app/views/tunnel-template.html'
         };
 
     } );
