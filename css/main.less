@@ -7,11 +7,17 @@
     position: relative;
 }
 
+@tunnelWidth: 200px;
+@tunnelHeight: 240px;
+
+@wayWidth: 78px;
+@wayHeight: @tunnelHeight + 100 - 30;
+
 .tunnel {
     position: absolute;
     border: 1px solid red;
-    width: 200px;
-    height: 240px;
+    width: @tunnelWidth;
+    height: @tunnelHeight;
 
     .bg {
         position: absolute;
@@ -19,20 +25,22 @@
         height: inherit;
         background-image: url(../sprites/tunnel-bg.png);
         background-size: contain;
-//        opacity: 0.4;
+        //        opacity: 0.4;
     }
 
     .way {
         position: absolute;
-        width: 78px;
+        width: @wayWidth;
+        height: @wayHeight;
 
-//        background-color: black;
-//        opacity: 0.3;
+        border: 1px solid green;
+        //        background-color: black;
+        //        opacity: 0.3;
 
         left: 65px;
 
-        bottom: 30px;
         top: -100px;
+
     }
 
     .cover {
@@ -41,19 +49,34 @@
         height: inherit;
         background-image: url(../sprites/tunnel-cover.png);
         background-size: contain;
-//        opacity: 0.7;
+        opacity: 0.5;
     }
 
 }
 
+@enemyHeight: 100px;
+@enemyAnimationTopUp: 20px;
+@enemyAnimationTopDown: @wayHeight - @enemyHeight;
+
 .enemy {
 
     border: 1px solid blue;
-
-    margin-top: 25px;
-    width: inherit;
-    height: 100px;
+    position: absolute;
+    width: @wayWidth;
+    height: @enemyHeight;
     background-size: cover;
+
+    transition: top 0.5s linear, bottom 0.5s linear;
+
+    &.looked {
+        top: @enemyAnimationTopUp;
+    }
+
+    &.down {
+        top: @enemyAnimationTopDown;
+    }
+
+    // Enemy types
 
     &.enemy1 {
         background-image: url(../sprites/enemy1.png);

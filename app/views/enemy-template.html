@@ -1,3 +1,6 @@
-<div class="enemy {{ EnemyController.enemyClassType }}">
+<div class="enemy {{ EnemyController.enemyTypeClass }} {{ positionClass }}"
+        ng-click="EnemyController.up()">
+
+        {{ EnemyController.enemy }}
 
 </div>

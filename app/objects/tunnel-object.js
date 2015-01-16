@@ -15,17 +15,21 @@ define(
 
                     scope: {
                         posX: '@',
-                        posY: '@'
+                        posY: '@',
+                        index: '@'
                     },
 
                     controllerAs: 'TunnelController',
-                    controller: [ '$scope', 'tunnelService',
-                        function ( $scope, tunnelService ) {
+                    controller: [ '$scope', 'tunnelService', 'enemyService',
+                        function ( $scope, tunnelService, enemyService ) {
 
+                            var vm = this;
 
-                            this.tunnels = tunnelService.tunnels;
+                            vm.enemy = enemyService.enemies[ $scope.index ];
 
-                            this.coords = { x: 0, y: 0 };
+                            vm.tunnels = tunnelService.tunnels;
+
+                            vm.coords = { x: 0, y: 0 };
 
 
                         } ],

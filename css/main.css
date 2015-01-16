@@ -22,8 +22,9 @@
 .tunnel .way {
   position: absolute;
   width: 78px;
+  height: 310px;
+  border: 1px solid green;
   left: 65px;
-  bottom: 30px;
   top: -100px;
 }
 .tunnel .cover {
@@ -32,13 +33,21 @@
   height: inherit;
   background-image: url(../sprites/tunnel-cover.png);
   background-size: contain;
+  opacity: 0.5;
 }
 .enemy {
   border: 1px solid blue;
-  margin-top: 25px;
-  width: inherit;
+  position: absolute;
+  width: 78px;
   height: 100px;
   background-size: cover;
+  transition: top 0.5s linear, bottom 0.5s linear;
+}
+.enemy.looked {
+  top: 20px;
+}
+.enemy.down {
+  top: 210px;
 }
 .enemy.enemy1 {
   background-image: url(../sprites/enemy1.png);

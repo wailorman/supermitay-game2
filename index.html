@@ -16,7 +16,8 @@
     <tunnel-object
             ng-repeat="( tunnelIndex, tunnel ) in ScreenController.tunnels"
             pos-x="{{ tunnel.coords.x }}"
-            pos-y="{{ tunnel.coords.y }}">
+            pos-y="{{ tunnel.coords.y }}"
+            index="{{ tunnelIndex }}">
 
         <enemy-object
                 index="{{ tunnelIndex }}">

@@ -28,13 +28,21 @@ define(
                             var vm = this;
 
                             vm.enemies = enemyService.enemies;
+                            vm.enemy = vm.enemies[ $scope.index ];
+
 
                             // initialize
 
-                            vm.enemyClassType = 'enemy' + vm.enemies[ $scope.index ].type;
-                            vm.class = 'enemy' + this.type;
+                            vm.enemyTypeClass = 'enemy' + vm.enemies[ $scope.index ].type;
+                            $scope.positionClass = vm.enemy.position;
 
+                            $scope.$watchCollection( 'vm.enemies', function () {
 
+                                console.log( '\n\n\n\n' + JSON.stringify(vm.enemies) + '\n\n\n\n\n' );
+
+                            });
+
+                            vm.up = vm.enemy.up;
 
                         } ],
 
@@ -69,17 +77,22 @@ define(
 
             enemy.type = parseInt( Math.random() * 2 ) + 1;
 
-            enemy.isLooked = false;
+            enemy.position = 'down';
+            console.log( 'position: ' + enemy.position );
 
-            enemy.look = function () {
+            setTimeout( function () {
 
-                enemy.isLooked = true;
+                enemy.position = 'up';
+                console.log( 'position: ' + enemy.position );
 
-                setTimeout( function () {
+            }, 2000 );
 
-                    enemy.isLooked = false;
+            enemy.up = function () {
 
-                }, lookTime + timeOfMove );
+                //console.log( 'up!' );
+
+                enemy.position = 'up';
+                console.log( 'position: ' + enemy.position );
 
             };
 
