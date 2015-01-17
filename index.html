@@ -11,22 +11,44 @@
 <body>
 
 
-<screen-object>
+<!-- screen -->
+<div class="screen">
 
-    <tunnel-object
-            ng-repeat="( tunnelIndex, tunnel ) in ScreenController.tunnels"
-            pos-x="{{ tunnel.coords.x }}"
-            pos-y="{{ tunnel.coords.y }}"
-            index="{{ tunnelIndex }}">
+    <!-- tunnels group -->
+    <div ng-controller="TunnelController">
 
-        <enemy-object
-                index="{{ tunnelIndex }}">
+        <!-- tunnel -->
+        <div ng-repeat="( tunnelIndex, tunnel ) in tunnels"
+             ng-click="enemies[ tunnelIndex ].togglePosition()"
 
-        </enemy-object>
+             class="tunnel"
+             style=" {{ getStyleByPos( tunnel.position.x, tunnel.position.y ) }} ">
 
-    </tunnel-object>
+            <div class="bg"></div>
+            <div class="way">
 
-</screen-object>
+                <!-- enemy in tunnel -->
+                <div class="enemy
+                type{{ enemies[ tunnelIndex ].type }}
+                {{ enemies[ tunnelIndex ].position }}">
+
+                    <div class="enemy-laser">
+                        <div class="eye-point"></div>
+                        <div class="fire-point"></div>
+                    </div>
+
+                </div>
+
+
+
+            </div>
+            <div class="cover"></div>
+
+        </div>
+
+    </div>
+
+</div>
 
 
 </body>

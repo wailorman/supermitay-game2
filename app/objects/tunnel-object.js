@@ -1,65 +1,112 @@
 define(
-    [ 'app' ],
-    function ( app ) {
+    [
+        'app',
+        'enemy'
+    ],
+    function ( app, Enemy ) {
 
         console.log( 'tunnel' );
 
+        function getRandomInt( min, max ) {
+            return Math.floor( Math.random() * (max - min + 1) ) + min;
+        }
 
         return app
-            .directive( 'tunnelObject', function(){
+            .controller( 'TunnelController', [ '$scope', '$rootScope', 'tunnelService',
+                function ( $scope, $rootScope, tunnelService ) {
 
-                return {
-                    restrict: 'E',
+                    $scope.tunnels = tunnelService.tunnels;
 
-                    transclude: true,
+                    $scope.enemies = tunnelService.enemies;
 
-                    scope: {
-                        posX: '@',
-                        posY: '@',
-                        index: '@'
-                    },
+                    $rootScope.$on( 'updateEnemiesPos', function(){
 
-                    controllerAs: 'TunnelController',
-                    controller: [ '$scope', 'tunnelService', 'enemyService',
-                        function ( $scope, tunnelService, enemyService ) {
+                        $scope.enemies = tunnelService.enemies;
+                        $scope.$apply();
+                        //console.log( '1' );
+                        
+                    }, true );
 
-                            var vm = this;
+                    $scope.getStyleByPos = function ( x, y ) {
+                        return " top: " + y + "px; left: " + x + "px";
+                    };
 
-                            vm.enemy = enemyService.enemies[ $scope.index ];
-
-                            vm.tunnels = tunnelService.tunnels;
-
-                            vm.coords = { x: 0, y: 0 };
+                } ] )
 
 
-                        } ],
+            .service( 'tunnelService', [ '$rootScope',
+                function ( $rootScope ) {
 
-                    templateUrl: './app/views/tunnel-template.html'
-                };
+                    function Tunnel( coords ) {
 
-            } )
-            .service( 'tunnelService', function () {
+                        this.position = {};
+                        this.position.x = coords.x;
+                        this.position.y = coords.y;
 
-                this.tunnels = [
-                    new Tunnel( { x: 150, y: 250 } ),
-                    new Tunnel( { x: 320, y: 140 } ),
-                    new Tunnel( { x: 390, y: 298 } ),
-                    new Tunnel( { x: 554, y: 185 } )
-                ];
+                        this.enemy = new Enemy();
 
-                this.size = {
-                    width:  200,
-                    height: 240
-                };
+                        this.hey = '1';
 
-            } );
+                    }
+
+                    function Enemy() {
+
+                        var enemy = this;
+
+                        enemy.type = parseInt( Math.random() * 2 ) + 1;
+
+                        enemy.position = 'down';
+
+                        enemy.togglePosition = function () {
+
+                            enemy.position = enemy.position == 'down' ? 'up' : 'down';
+                            //console.log( 'toggle pos! ' + enemy.position );
+                            $rootScope.$broadcast( 'updateEnemiesPos' );
+
+                        };
+
+                        enemy.showInterval = setInterval( function(){
+
+                            enemy.togglePosition();
+
+                        }, getRandomInt( 1300, 3200 ) );
 
 
-        function Tunnel( coords ) {
+                        enemy.startIntervalAgain = function () {
 
-            this.coords = coords;
+                            clearInterval( enemy.showInterval );
 
-        }
+                            // Time before spawn new enemy
+                            setTimeout( function () {
+
+                                enemy.showInterval = setInterval( function(){
+
+                                    enemy.togglePosition();
+
+                                }, getRandomInt( 1300, 3200 ) );
+
+                            }, 2000 );
+
+                        };
+
+                    }
+
+                    this.tunnels = [
+                        new Tunnel( { x: 150, y: 250 } ),
+                        new Tunnel( { x: 320, y: 140 } ),
+                        new Tunnel( { x: 390, y: 298 } ),
+                        new Tunnel( { x: 554, y: 185 } )
+                    ];
+
+                    this.enemies = [
+                        new Enemy(),
+                        new Enemy(),
+                        new Enemy(),
+                        new Enemy()
+                    ];
+
+                } ] );
+
 
     }
 );

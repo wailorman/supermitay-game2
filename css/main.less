@@ -5,13 +5,14 @@
     width: 960px;
     height: 640px;
     position: relative;
+    overflow: hidden;
 }
 
 @tunnelWidth: 200px;
 @tunnelHeight: 240px;
 
 @wayWidth: 78px;
-@wayHeight: @tunnelHeight + 100 - 30;
+@wayHeight: @tunnelHeight + 100 - 80;
 
 .tunnel {
     position: absolute;
@@ -39,7 +40,7 @@
 
         left: 65px;
 
-        top: -100px;
+        top: -80px;
 
     }
 
@@ -55,8 +56,8 @@
 }
 
 @enemyHeight: 100px;
-@enemyAnimationTopUp: 20px;
-@enemyAnimationTopDown: @wayHeight - @enemyHeight;
+@enemyPositionAtTop: 0;
+@enemyPositionAtDown: @wayHeight - @enemyHeight;
 
 .enemy {
 
@@ -66,24 +67,40 @@
     height: @enemyHeight;
     background-size: cover;
 
+    top: @enemyPositionAtTop;
+
     transition: top 0.5s linear, bottom 0.5s linear;
 
-    &.looked {
-        top: @enemyAnimationTopUp;
+    &.up {
+        top: @enemyPositionAtTop;
     }
 
     &.down {
-        top: @enemyAnimationTopDown;
+        top: @enemyPositionAtDown;
     }
 
     // Enemy types
 
-    &.enemy1 {
+    &.type1 {
         background-image: url(../sprites/enemy1.png);
     }
 
-    &.enemy2 {
+    &.type2 {
         background-image: url(../sprites/enemy2.png);
+    }
+
+    // Lasers
+    .enemy-laser{
+
+        width: 5px;
+        height: 420px;
+        background: red;
+        position: absolute;
+        transform: rotate( 45deg );
+        opacity: 1;
+        left: -137px;
+        top: -15px;
+
     }
 
 }

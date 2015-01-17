@@ -5,6 +5,7 @@
   width: 960px;
   height: 640px;
   position: relative;
+  overflow: hidden;
 }
 .tunnel {
   position: absolute;
@@ -22,10 +23,10 @@
 .tunnel .way {
   position: absolute;
   width: 78px;
-  height: 310px;
+  height: 260px;
   border: 1px solid green;
   left: 65px;
-  top: -100px;
+  top: -80px;
 }
 .tunnel .cover {
   position: absolute;
@@ -41,17 +42,28 @@
   width: 78px;
   height: 100px;
   background-size: cover;
+  top: 0;
   transition: top 0.5s linear, bottom 0.5s linear;
 }
-.enemy.looked {
-  top: 20px;
+.enemy.up {
+  top: 0;
 }
 .enemy.down {
-  top: 210px;
+  top: 160px;
 }
-.enemy.enemy1 {
+.enemy.type1 {
   background-image: url(../sprites/enemy1.png);
 }
-.enemy.enemy2 {
+.enemy.type2 {
   background-image: url(../sprites/enemy2.png);
+}
+.enemy .enemy-laser {
+  width: 5px;
+  height: 420px;
+  background: red;
+  position: absolute;
+  transform: rotate(45deg);
+  opacity: 1;
+  left: -137px;
+  top: -15px;
 }
