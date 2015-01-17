@@ -51,6 +51,7 @@
         background-image: url(../sprites/tunnel-cover.png);
         background-size: contain;
         opacity: 0.5;
+        z-index: 100;
     }
 
 }
@@ -90,17 +91,203 @@
     }
 
     // Lasers
-    .enemy-laser{
+    .enemy-laser {
 
-        width: 5px;
-        height: 420px;
+        @enemy-laser-width: 5px;
+        @enemy-laser-height: 500px;
+
+        @enemy-laser-offset-x: 30px;
+        @enemy-laser-offset-y: 40px;
+
+        @enemy-laser-rotate: -5deg;
+
+        width: @enemy-laser-width;
         background: red;
         position: absolute;
-        transform: rotate( 45deg );
         opacity: 1;
-        left: -137px;
-        top: -15px;
 
+        z-index: 200;
+
+        &.laser0 {
+
+            @enemy-laser-offset-x: 93px;
+            @enemy-laser-offset-y: 21px;
+
+            @enemy-laser-height: 400px;
+
+            @enemy-laser-rotate: -20deg;
+
+            top: @enemy-laser-offset-y;
+            left: @enemy-laser-offset-x;
+
+            height: @enemy-laser-height;
+            transform: rotate(@enemy-laser-rotate);
+
+        }
+
+        &.laser1 {
+
+            @enemy-laser-offset-x: 49px;
+            @enemy-laser-offset-y: 31px;
+
+            @enemy-laser-height: 500px;
+
+            @enemy-laser-rotate: -3deg;
+
+            top: @enemy-laser-offset-y;
+            left: @enemy-laser-offset-x;
+
+            height: @enemy-laser-height;
+            transform: rotate(@enemy-laser-rotate);
+
+        }
+
+        &.laser2 {
+
+            @enemy-laser-offset-x: 42px;
+            @enemy-laser-offset-y: 21px;
+
+            @enemy-laser-height: 350px;
+
+            @enemy-laser-rotate: -5deg;
+
+            top: @enemy-laser-offset-y;
+            left: @enemy-laser-offset-x;
+
+            height: @enemy-laser-height;
+            transform: rotate(@enemy-laser-rotate);
+
+        }
+
+        &.laser3 {
+
+            @enemy-laser-offset-x: -27px;
+            @enemy-laser-offset-y: 21px;
+
+            @enemy-laser-height: 480px;
+
+            @enemy-laser-rotate: 15deg;
+
+            top: @enemy-laser-offset-y;
+            left: @enemy-laser-offset-x;
+
+            height: @enemy-laser-height;
+            transform: rotate(@enemy-laser-rotate);
+
+        }
+
+        .eye-point {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background-color: red;
+            top: -10px;
+            left: -8px;
+            border-radius: 20px;
+        }
+
+        .fire-point-container{
+            position: absolute;
+            bottom: 0;
+
+            .fire-point {
+                position: absolute;
+                top: -100px;
+                left: -60px;
+
+                background-image: url(../sprites/laser-burning.png);
+                width: 128px;
+                height: 128px;
+                -webkit-animation: laser-burning 0.7s 0s step-end infinite;
+            }
+
+        }
+
+    }
+
+}
+
+@-webkit-keyframes laser-burning {
+
+    6% {
+        background-position: 0 0;
+        width: 128px;
+        height: 128px;
+    }
+    12% {
+        background-position: 0 -178px;
+        width: 128px;
+        height: 128px;
+    }
+    18% {
+        background-position: 0 -356px;
+        width: 128px;
+        height: 128px;
+    }
+    24% {
+        background-position: 0 -534px;
+        width: 128px;
+        height: 128px;
+    }
+    30% {
+        background-position: 0 -712px;
+        width: 128px;
+        height: 128px;
+    }
+    36% {
+        background-position: 0 -890px;
+        width: 128px;
+        height: 128px;
+    }
+    42% {
+        background-position: 0 -1068px;
+        width: 128px;
+        height: 128px;
+    }
+    48% {
+        background-position: 0 -1246px;
+        width: 128px;
+        height: 128px;
+    }
+    54% {
+        background-position: 0 -1424px;
+        width: 128px;
+        height: 128px;
+    }
+    60% {
+        background-position: 0 -1602px;
+        width: 128px;
+        height: 128px;
+    }
+    66% {
+        background-position: 0 -1780px;
+        width: 128px;
+        height: 128px;
+    }
+    72% {
+        background-position: -178px 0;
+        width: 128px;
+        height: 128px;
+    }
+    78% {
+        background-position: -178px -178px;
+        width: 128px;
+        height: 128px;
+    }
+    84% {
+        background-position: -178px -356px;
+        width: 128px;
+        height: 128px;
+    }
+    90% {
+        background-position: -178px -534px;
+        width: 128px;
+        height: 128px;
+    }
+    100% {
+        background-position: -178px -712px;
+        width: 128px;
+        height: 128px;
     }
 
 }

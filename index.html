@@ -3,6 +3,7 @@
 <head>
 
     <link rel="stylesheet" href="css/main.css"/>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
 
     <script src="bower_components/requirejs/require.js" data-main="main.js"></script>
 
@@ -19,8 +20,7 @@
 
         <!-- tunnel -->
         <div ng-repeat="( tunnelIndex, tunnel ) in tunnels"
-             ng-click="enemies[ tunnelIndex ].togglePosition()"
-
+             ng-click="enemies[ tunnelIndex ].look()"
              class="tunnel"
              style=" {{ getStyleByPos( tunnel.position.x, tunnel.position.y ) }} ">
 
@@ -30,11 +30,15 @@
                 <!-- enemy in tunnel -->
                 <div class="enemy
                 type{{ enemies[ tunnelIndex ].type }}
-                {{ enemies[ tunnelIndex ].position }}">
+                {{ enemies[ tunnelIndex ].position }}"
+                        ng-click="enemies[ tunnelIndex ].startShooting()">
 
-                    <div class="enemy-laser">
+                    <div class="enemy-laser laser{{ tunnelIndex }}"
+                            ng-class="{ 'invisible': ! enemies[ tunnelIndex ].laserVisible }">
                         <div class="eye-point"></div>
-                        <div class="fire-point"></div>
+                        <div class="fire-point-container">
+                            <div class="fire-point"></div>
+                        </div>
                     </div>
 
                 </div>
@@ -48,6 +52,13 @@
 
     </div>
 
+</div>
+
+<div class="gun">
+    <div class="sight">
+        <div class="vertical-line"></div>
+        <div class="horizontal-line"></div>
+    </div>
 </div>
 
 

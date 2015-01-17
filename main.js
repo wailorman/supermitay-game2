@@ -5,6 +5,7 @@ require.config( {
     paths: {
         'angular': '../bower_components/angular/angular',
         'app':     '../app/app',
+        'async': '../bower_components/async/lib/async',
 
         'tunnel': '../app/objects/tunnel-object',
         'enemy':  '../app/objects/enemy-object',

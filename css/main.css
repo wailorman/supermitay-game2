@@ -35,6 +35,7 @@
   background-image: url(../sprites/tunnel-cover.png);
   background-size: contain;
   opacity: 0.5;
+  z-index: 100;
 }
 .enemy {
   border: 1px solid blue;
@@ -59,11 +60,136 @@
 }
 .enemy .enemy-laser {
   width: 5px;
-  height: 420px;
   background: red;
   position: absolute;
-  transform: rotate(45deg);
   opacity: 1;
-  left: -137px;
-  top: -15px;
+  z-index: 200;
+}
+.enemy .enemy-laser.laser0 {
+  top: 21px;
+  left: 93px;
+  height: 400px;
+  transform: rotate(-20deg);
+}
+.enemy .enemy-laser.laser1 {
+  top: 31px;
+  left: 49px;
+  height: 500px;
+  transform: rotate(-3deg);
+}
+.enemy .enemy-laser.laser2 {
+  top: 21px;
+  left: 42px;
+  height: 350px;
+  transform: rotate(-5deg);
+}
+.enemy .enemy-laser.laser3 {
+  top: 21px;
+  left: -27px;
+  height: 480px;
+  transform: rotate(15deg);
+}
+.enemy .enemy-laser .eye-point {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  background-color: red;
+  top: -10px;
+  left: -8px;
+  border-radius: 20px;
+}
+.enemy .enemy-laser .fire-point-container {
+  position: absolute;
+  bottom: 0;
+}
+.enemy .enemy-laser .fire-point-container .fire-point {
+  position: absolute;
+  top: -100px;
+  left: -60px;
+  background-image: url(../sprites/laser-burning.png);
+  width: 128px;
+  height: 128px;
+  -webkit-animation: laser-burning 0.7s 0s step-end infinite;
+}
+@-webkit-keyframes laser-burning {
+  6% {
+    background-position: 0 0;
+    width: 128px;
+    height: 128px;
+  }
+  12% {
+    background-position: 0 -178px;
+    width: 128px;
+    height: 128px;
+  }
+  18% {
+    background-position: 0 -356px;
+    width: 128px;
+    height: 128px;
+  }
+  24% {
+    background-position: 0 -534px;
+    width: 128px;
+    height: 128px;
+  }
+  30% {
+    background-position: 0 -712px;
+    width: 128px;
+    height: 128px;
+  }
+  36% {
+    background-position: 0 -890px;
+    width: 128px;
+    height: 128px;
+  }
+  42% {
+    background-position: 0 -1068px;
+    width: 128px;
+    height: 128px;
+  }
+  48% {
+    background-position: 0 -1246px;
+    width: 128px;
+    height: 128px;
+  }
+  54% {
+    background-position: 0 -1424px;
+    width: 128px;
+    height: 128px;
+  }
+  60% {
+    background-position: 0 -1602px;
+    width: 128px;
+    height: 128px;
+  }
+  66% {
+    background-position: 0 -1780px;
+    width: 128px;
+    height: 128px;
+  }
+  72% {
+    background-position: -178px 0;
+    width: 128px;
+    height: 128px;
+  }
+  78% {
+    background-position: -178px -178px;
+    width: 128px;
+    height: 128px;
+  }
+  84% {
+    background-position: -178px -356px;
+    width: 128px;
+    height: 128px;
+  }
+  90% {
+    background-position: -178px -534px;
+    width: 128px;
+    height: 128px;
+  }
+  100% {
+    background-position: -178px -712px;
+    width: 128px;
+    height: 128px;
+  }
 }

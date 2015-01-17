@@ -1,9 +1,10 @@
 define(
     [
         'app',
-        'enemy'
+        'enemy',
+        'async'
     ],
-    function ( app, Enemy ) {
+    function ( app, Enemy, async ) {
 
         console.log( 'tunnel' );
 
@@ -15,14 +16,25 @@ define(
             .controller( 'TunnelController', [ '$scope', '$rootScope', 'tunnelService',
                 function ( $scope, $rootScope, tunnelService ) {
 
+                    $scope.safeApply = function(fn) {
+                        var phase = this.$root.$$phase;
+                        if(phase == '$apply' || phase == '$digest') {
+                            if(fn && (typeof(fn) === 'function')) {
+                                fn();
+                            }
+                        } else {
+                            this.$apply(fn);
+                        }
+                    };
+
                     $scope.tunnels = tunnelService.tunnels;
 
                     $scope.enemies = tunnelService.enemies;
 
-                    $rootScope.$on( 'updateEnemiesPos', function(){
+                    $rootScope.$on( 'updateEnemiesData', function(){
 
                         $scope.enemies = tunnelService.enemies;
-                        $scope.$apply();
+                        $scope.safeApply();
                         //console.log( '1' );
                         
                     }, true );
@@ -36,6 +48,8 @@ define(
 
             .service( 'tunnelService', [ '$rootScope',
                 function ( $rootScope ) {
+
+                    var tunnelService = this;
 
                     function Tunnel( coords ) {
 
@@ -53,41 +67,105 @@ define(
 
                         var enemy = this;
 
+                        var timeToMove = 500,
+                            timeBeforeStartShooting = 600,
+                            timeToShoot = 1000;
+
                         enemy.type = parseInt( Math.random() * 2 ) + 1;
 
                         enemy.position = 'down';
+                        enemy.laserVisible = false;
+
+                        enemy.availableToMove = true;
 
                         enemy.togglePosition = function () {
 
                             enemy.position = enemy.position == 'down' ? 'up' : 'down';
                             //console.log( 'toggle pos! ' + enemy.position );
-                            $rootScope.$broadcast( 'updateEnemiesPos' );
+                            $rootScope.$broadcast( 'updateEnemiesData' );
 
                         };
 
-                        enemy.showInterval = setInterval( function(){
+                        enemy.look = function() {
 
-                            enemy.togglePosition();
+                            if ( enemy.availableToMove == false ) return false;
 
-                        }, getRandomInt( 1300, 3200 ) );
+                            var timeToLook = getRandomInt( 1000, 2000 );
+
+                            async.series(
+                                [
+
+                                    // go to surface
+                                    function( scb ){
+
+                                        if ( ! enemy.availableToMove ) scb( true ); // call error
+
+                                        enemy.availableToMove = false;
+                                        enemy.position = 'up';
+
+                                        $rootScope.$broadcast( 'updateEnemiesData' );
+
+                                        setTimeout( scb, timeToMove + timeBeforeStartShooting );
+
+                                    },
+
+                                    // start shooting
+                                    function( scb ){
+
+                                        enemy.laserVisible = true;
+
+                                        $rootScope.$broadcast( 'updateEnemiesData' );
+
+                                        setTimeout( scb, timeToShoot );
+
+                                    },
+
+                                    // stop shooting
+                                    function ( scb ){
+
+                                        enemy.laserVisible = false;
+
+                                        $rootScope.$broadcast( 'updateEnemiesData' );
+
+                                        scb();
+
+                                    },
+
+                                    // go down
+                                    function ( scb ) {
+
+                                        enemy.laserVisible = false;
+                                        enemy.position = 'down';
+
+                                        $rootScope.$broadcast( 'updateEnemiesData' );
+
+                                        setTimeout( function () {
+
+                                            enemy.availableToMove = true;
+
+                                            $rootScope.$broadcast( 'updateEnemiesData' );
+
+                                            scb();
+
+                                        }, timeToMove );
+
+                                    }
+
+                                ],
+                                function(){}
+                            );
 
 
-                        enemy.startIntervalAgain = function () {
 
-                            clearInterval( enemy.showInterval );
 
-                            // Time before spawn new enemy
-                            setTimeout( function () {
-
-                                enemy.showInterval = setInterval( function(){
-
-                                    enemy.togglePosition();
-
-                                }, getRandomInt( 1300, 3200 ) );
-
-                            }, 2000 );
 
                         };
+
+                        setInterval( function(){
+
+                            enemy.look();
+
+                        }, getRandomInt( 2500, 4000 ) );
 
                     }
 
