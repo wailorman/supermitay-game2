@@ -143,10 +143,11 @@ define( [
 
                 $rootScope.$on( 'enemyWasKilled', function(){
 
-                    console.log( 'enemy was killed' );
                     screenService.enemiesKilled += 1;
+                    console.log( 'enemy was killed ' + screenService.enemiesKilled );
 
-                    if ( screenService.enemiesKilled === 70 ) {
+
+                    if ( screenService.enemiesKilled === 50 ) {
                         screenService.goToNextLevel();
                     }
 

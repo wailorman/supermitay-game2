@@ -128,6 +128,7 @@ define(
                         enemy.kill = function ( callback ) {
 
                             if ( enemy.position != 'up' ) return false;
+                            if ( enemy.killedMark == true ) return false;
 
                             enemy.stopShooting();
                             enemy.killedMark = true;
