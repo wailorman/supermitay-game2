@@ -81,9 +81,9 @@ define( [
 
                 };
 
-                $scope.shoot = function ( ) {
+                $scope.callShootEvent = function ( ) {
 
-                    return gunService.shoot();
+                    return gunService.callShootEvent();
 
                 };
 
@@ -124,27 +124,11 @@ define( [
 
                 };
 
-                this.shoot = function () {
+                this.callShootEvent = function () {
 
                     var shootPoint = gunService.position;
 
-                    tunnelService.tunnels.forEach( function ( tunnel ) {
-
-                        var shootZone = tunnel.shootZone;
-
-                        var isInShootZone = shootPoint.x >= shootZone[ 0 ].x && shootPoint.y >= shootZone[ 0 ].y &&
-                                            shootPoint.x <= shootZone[ 1 ].x && shootPoint.y <= shootZone[ 1 ].y;
-
-                        if ( isInShootZone ){
-
-                            tunnel.enemy.kill();
-                            
-                        }
-
-                        console.log( '\n' );
-
-                        
-                    } );
+                    $rootScope.$broadcast( 'playerShooted', shootPoint );
 
                 };
 

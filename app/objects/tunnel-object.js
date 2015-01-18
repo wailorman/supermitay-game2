@@ -57,28 +57,6 @@ define(
                         return " top: " + y + "px; left: " + x + "px";
                     };
 
-                    /*$scope.getShootZoneStyle = function ( tunnelId ) {
-
-                     var shootZonePos = tunnelService.shootZones[ tunnelId ];
-                     var tunnelPosition
-
-                     var style = {
-
-                     top:  shootZonePos[ 0 ].y,
-                     left: shootZonePos[ 0 ].x,
-
-                     right: shootZonePos[ 1 ].x - tunnelService.tunnels[ tunnelId ].position.x - tunnelSize.x,
-                     bottom: shootZonePos[ 1 ].y - tunnelService.tunnels[ tunnelId ].position.y - tunnelSize.y
-
-                     };
-
-                     return "top: "+style.top+"px; " +
-                     "left: "+style.left+"px; " +
-                     "right: "+style.right+"px; " +
-                     "bottom: "+style.bottom+"px";
-
-                     };*/
-
                 } ] )
 
 
@@ -90,12 +68,12 @@ define(
                     function Tunnel( coords ) {
 
                         var self = this;
+                        var tunnelObject = this;
 
                         this.position = {};
                         this.position.x = coords.x;
                         this.position.y = coords.y;
 
-                        this.enemy = new Enemy();
 
                         this.hey = '1';
 
@@ -121,119 +99,223 @@ define(
                             }
                         ];
 
+                        this.enemy = new Enemy( this );
+
                     }
 
-                    function Enemy() {
+                    function Enemy( parentTunnel ) {
 
                         var enemy = this;
+                        var enemyObject = this;
 
                         var timeToMove = 500,
-                            timeBeforeStartShooting = 600,
-                            timeToShoot = 1000;
+                            timeBeforeStartShooting = 400,
+                            timeToShoot = 500 + timeBeforeStartShooting;
 
-                        enemy.type = getRandomInt( 0, 9 );
+                        enemy.shootZone = parentTunnel.shootZone;
 
-                        enemy.killed = false;
+                        enemy.killedMark = false;
 
-
-                        enemy.position = 'up';
+                        enemy.position = 'down';
                         enemy.availableToMove = true;
 
                         enemy.laserVisible = false;
 
-                        enemy.kill = function(){
 
-                            enemy.killed = true;
+                        enemy.kill = function ( callback ) {
+
+                            if ( enemy.position != 'up' ) return false;
+
+                            enemy.stopShooting();
+                            enemy.killedMark = true;
                             $rootScope.$broadcast( 'updateEnemiesData' );
+
+                            callback();
 
                         };
 
-                        enemy.togglePosition = function () {
+                        enemy.reSpawn = function () {
 
-                            enemy.position = enemy.position == 'down' ? 'up' : 'down';
-                            //console.log( 'toggle pos! ' + enemy.position );
+                            enemy.type = getRandomInt( 0, 9 ); // Random enemy type
+                            enemy.killedMark = false;
+
+                        };
+
+                        enemy.goUp = function ( callback ) {
+                            enemy.move( 'up', callback );
+                        };
+
+                        enemy.goDown = function ( callback ) {
+                            enemy.move( 'down', callback );
+                        };
+
+                        enemy.move = function ( pos, callback ) {
+
+                            if ( !enemy.availableToMove ) return false;
+
+                            enemy.availableToMove = false;
+                            enemy.stopShooting();
+
+                            enemy.position = pos;
                             $rootScope.$broadcast( 'updateEnemiesData' );
 
+                            setTimeout( function () {
+
+                                enemy.availableToMove = true;
+                                callback();
+
+                            }, timeToMove );
+
+                        };
+
+                        enemy.startShooting = function () {
+
+                            if ( enemy.position != 'up' ) return false;
+
+                            enemy.availableToMove = false;
+                            $rootScope.$broadcast( 'updateEnemiesData' );
+                            enemy.laserVisible = true;
+
+                        };
+
+                        enemy.stopShooting = function () {
+
+                            enemy.laserVisible = false;
+                            $rootScope.$broadcast( 'updateEnemiesData' );
+                            enemy.availableToMove = true;
+
+                        };
+
+                        var isShootPointInShootZone = function ( shootPoint ) {
+
+                            var shootZone = enemy.shootZone;
+
+                            return shootPoint.x >= shootZone[ 0 ].x && shootPoint.y >= shootZone[ 0 ].y &&
+                                   shootPoint.x <= shootZone[ 1 ].x && shootPoint.y <= shootZone[ 1 ].y;
+
+
+                        };
+
+                        /**
+                         * Trigger playerShoot event. Call on every shoot even though player not been hit any enemy
+                         *
+                         * @returns {Function|function()|*}
+                         * @param [callOnPlayerKilled]
+                         */
+                        var createPlayerShootTrigger = function ( callOnPlayerKilled ) {
+                            return $rootScope.$on( 'playerShooted', function ( event, shootPoint ) {
+
+                                if ( isShootPointInShootZone( shootPoint ) ) {
+
+                                    enemy.kill( callOnPlayerKilled );
+
+                                }
+
+                            } );
+                        };
+
+
+                        var removePlayerShootTrigger = function () {
+                            return createPlayerShootTrigger()();
                         };
 
                         enemy.look = function () {
 
-                            if ( enemy.availableToMove == false ) return false;
+                            async.series( [
 
-                            var timeToLook = getRandomInt( 1000, 2000 );
+                                // . Go up
+                                function ( scb ) {
 
-                            async.series(
-                                [
+                                    enemy.goUp( scb );
 
-                                    // go to surface
-                                    function ( scb ) {
+                                },
 
-                                        if ( !enemy.availableToMove ) scb( true ); // call error
+                                // . Shoot!
+                                function ( scb ) {
 
-                                        enemy.availableToMove = false;
-                                        enemy.position = 'up';
+                                    setTimeout( function () {
 
-                                        $rootScope.$broadcast( 'updateEnemiesData' );
+                                        enemy.startShooting();
 
-                                        setTimeout( scb, timeToMove + timeBeforeStartShooting );
+                                    }, timeBeforeStartShooting );
 
-                                    },
 
-                                    // start shooting
-                                    function ( scb ) {
+                                    // Listen to player shoots
+                                    createPlayerShootTrigger( function () {
 
-                                        enemy.laserVisible = true;
+                                        // player has hit enemy
 
-                                        $rootScope.$broadcast( 'updateEnemiesData' );
+                                        clearTimeout( shootTimeout );
 
-                                        setTimeout( scb, timeToShoot );
-
-                                    },
-
-                                    // stop shooting
-                                    function ( scb ) {
-
-                                        enemy.laserVisible = false;
-
-                                        $rootScope.$broadcast( 'updateEnemiesData' );
+                                        //enemy.kill();
 
                                         scb();
 
-                                    },
+                                    } );
 
-                                    // go down
-                                    function ( scb ) {
+                                    // Shoot time is timed out
+                                    var shootTimeout = setTimeout( function () {
 
-                                        enemy.laserVisible = false;
-                                        enemy.position = 'down';
+                                        removePlayerShootTrigger();
+                                        scb();
 
-                                        $rootScope.$broadcast( 'updateEnemiesData' );
+                                    }, timeToShoot );
 
-                                        setTimeout( function () {
 
-                                            enemy.availableToMove = true;
+                                },
 
-                                            $rootScope.$broadcast( 'updateEnemiesData' );
+                                // . Go down
+                                function ( scb ) {
 
-                                            scb();
+                                    enemy.stopShooting();
+                                    enemy.goDown( function () {
 
-                                        }, timeToMove );
+                                        // If enemy was killed
 
-                                    }
+                                        if ( enemy.killedMark ) {
 
-                                ],
-                                function () {
+                                            enemy.clearLookInterval();
+
+                                            enemy.reSpawn();
+                                            enemy.restartLookInterval();
+
+                                        }
+
+                                        scb();
+
+                                    } );
+
                                 }
-                            );
 
+                            ] );
+                        };
+
+                        enemy.restartLookInterval = function () {
+
+                            enemy.lookInterval = setInterval( function () {
+
+                                enemy.look();
+
+                            }, getRandomInt( 2500, 7000 ) );
 
                         };
 
-                        setInterval( function () {
+                        enemy.clearLookInterval = function () {
 
-                            enemy.look();
+                            if ( enemy.lookInterval ) clearInterval( enemy.lookInterval );
 
-                        }, getRandomInt( 2500, 4000 ) );
+                        };
+
+                        // -------------------------------------------------
+                        // Constructor
+                        // -------------------------------------------------
+
+
+                        enemy.reSpawn();
+                        enemy.restartLookInterval();
+
+
+                        // -------------------------------------------------
 
                     }
 
@@ -242,13 +324,6 @@ define(
                         new Tunnel( { x: 320, y: 140 } ),
                         new Tunnel( { x: 390, y: 298 } ),
                         new Tunnel( { x: 554, y: 185 } )
-                    ];
-
-                    this.enemies = [
-                        new Enemy(),
-                        new Enemy(),
-                        new Enemy(),
-                        new Enemy()
                     ];
 
                 } ] );

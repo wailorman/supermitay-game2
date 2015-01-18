@@ -33,7 +33,7 @@
 
                     <!-- enemy in tunnel -->
                     <div class="enemy type{{ tunnel.enemy.type }} {{ tunnel.enemy.position }}"
-                            ng-class="{ 'killed': tunnel.enemy.killed }">
+                            ng-class="{ 'killed': tunnel.enemy.killedMark }">
 
                         <div class="enemy-laser laser{{ tunnelIndex }}"
                              ng-class="{ 'invisible': ! tunnel.enemy.laserVisible }">
@@ -67,7 +67,7 @@
         </div>
 
         <div class="mouseMovePlane"
-                ng-click="shoot()">
+                ng-click="callShootEvent()">
         </div>
 
 
