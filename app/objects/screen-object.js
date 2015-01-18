@@ -146,7 +146,7 @@ define( [
                     console.log( 'enemy was killed' );
                     screenService.enemiesKilled += 1;
 
-                    if ( screenService.enemiesKilled === 50 ) {
+                    if ( screenService.enemiesKilled === 70 ) {
                         screenService.goToNextLevel();
                     }
 
