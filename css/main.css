@@ -1,3 +1,10 @@
+body {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 .screen {
   margin: 0 auto;
   background: url(../sprites/screen-bg.png) center;
@@ -9,7 +16,6 @@
 }
 .tunnel {
   position: absolute;
-  border: 1px solid red;
   width: 200px;
   height: 240px;
 }
@@ -24,7 +30,6 @@
   position: absolute;
   width: 78px;
   height: 260px;
-  border: 1px solid green;
   left: 65px;
   top: -80px;
 }
@@ -34,17 +39,23 @@
   height: inherit;
   background-image: url(../sprites/tunnel-cover.png);
   background-size: contain;
-  opacity: 0.5;
-  z-index: 100;
+  opacity: 1;
+}
+.shoot-zone {
+  position: absolute;
+  background-color: rgba(0, 0, 255, 0.3);
 }
 .enemy {
-  border: 1px solid blue;
   position: absolute;
   width: 78px;
   height: 100px;
-  background-size: cover;
+  background-image: url(../sprites/sprites2.png);
+  background-size: 780px;
   top: 0;
   transition: top 0.5s linear, bottom 0.5s linear;
+}
+.enemy.killed {
+  background-position-y: 122px;
 }
 .enemy.up {
   top: 0;
@@ -52,11 +63,35 @@
 .enemy.down {
   top: 160px;
 }
+.enemy.type0 {
+  background-position-x: 0px;
+}
 .enemy.type1 {
-  background-image: url(../sprites/enemy1.png);
+  background-position-x: 78px;
 }
 .enemy.type2 {
-  background-image: url(../sprites/enemy2.png);
+  background-position-x: 156px;
+}
+.enemy.type3 {
+  background-position-x: 234px;
+}
+.enemy.type4 {
+  background-position-x: 312px;
+}
+.enemy.type5 {
+  background-position-x: 390px;
+}
+.enemy.type6 {
+  background-position-x: 468px;
+}
+.enemy.type7 {
+  background-position-x: 546px;
+}
+.enemy.type8 {
+  background-position-x: 624px;
+}
+.enemy.type9 {
+  background-position-x: 702px;
 }
 .enemy .enemy-laser {
   width: 5px;
@@ -110,6 +145,42 @@
   width: 128px;
   height: 128px;
   -webkit-animation: laser-burning 0.7s 0s step-end infinite;
+}
+.gun {
+  z-index: 500;
+  width: 1000px;
+  height: 700px;
+  background: url(../sprites/gun.png) no-repeat 50px 25px;
+  background-size: 120%;
+  position: absolute;
+}
+.gun .sight {
+  opacity: 0.4;
+}
+.gun .sight .vertical-line {
+  position: absolute;
+  width: 3px;
+  height: 30px;
+  background-color: yellow;
+  left: 13px;
+  top: 0;
+}
+.gun .sight .horizontal-line {
+  position: absolute;
+  width: 30px;
+  height: 3px;
+  background-color: yellow;
+  left: 0;
+  top: 13px;
+}
+.mouseMovePlane {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  cursor: none;
 }
 @-webkit-keyframes laser-burning {
   6% {

@@ -1,3 +1,13 @@
+body {
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+}
+
 .screen {
     margin: 0 auto;
     background: url(../sprites/screen-bg.png) center;
@@ -11,12 +21,14 @@
 @tunnelWidth: 200px;
 @tunnelHeight: 240px;
 
+@tunnelBodyWidth: 126px;
+
 @wayWidth: 78px;
 @wayHeight: @tunnelHeight + 100 - 80;
 
 .tunnel {
     position: absolute;
-    border: 1px solid red;
+//    border: 1px solid red;
     width: @tunnelWidth;
     height: @tunnelHeight;
 
@@ -34,7 +46,7 @@
         width: @wayWidth;
         height: @wayHeight;
 
-        border: 1px solid green;
+//        border: 1px solid green;
         //        background-color: black;
         //        opacity: 0.3;
 
@@ -50,11 +62,28 @@
         height: inherit;
         background-image: url(../sprites/tunnel-cover.png);
         background-size: contain;
-        opacity: 0.5;
-        z-index: 100;
+        opacity: 1;
+//        z-index: 100;
     }
 
 }
+
+
+@shoot-zone-offset: 10px;
+
+.shoot-zone {
+
+    position: absolute;
+    background-color: rgba( 0, 0, 255, 0.3);
+
+//    left: @tunnelWidth/2 - @tunnelBodyWidth/2 - @shoot-zone-offset;
+
+//    width: @tunnelBodyWidth + @shoot-zone-offset*2;
+//    height: 100px;
+
+}
+
+
 
 @enemyHeight: 100px;
 @enemyPositionAtTop: 0;
@@ -62,11 +91,17 @@
 
 .enemy {
 
-    border: 1px solid blue;
+//    border: 1px solid blue;
     position: absolute;
     width: @wayWidth;
     height: @enemyHeight;
-    background-size: cover;
+
+    background-image: url(../sprites/sprites2.png);
+    background-size: 780px;
+
+    &.killed {
+        background-position-y: 122px;
+    }
 
     top: @enemyPositionAtTop;
 
@@ -82,13 +117,50 @@
 
     // Enemy types
 
+
+    @multiplier: 78px;
+
+    &.type0 {
+        background-position-x: @multiplier * 0;
+    }
+
     &.type1 {
-        background-image: url(../sprites/enemy1.png);
+        background-position-x: @multiplier * 1;
     }
 
     &.type2 {
-        background-image: url(../sprites/enemy2.png);
+        background-position-x: @multiplier * 2;
     }
+
+    &.type3 {
+        background-position-x: @multiplier * 3;
+    }
+
+    &.type4 {
+        background-position-x: @multiplier * 4;
+    }
+
+    &.type5 {
+        background-position-x: @multiplier * 5;
+    }
+
+    &.type6 {
+        background-position-x: @multiplier * 6;
+    }
+
+    &.type7 {
+        background-position-x: @multiplier * 7;
+    }
+
+    &.type8 {
+        background-position-x: @multiplier * 8;
+    }
+
+    &.type9 {
+        background-position-x: @multiplier * 9;
+    }
+
+
 
     // Lasers
     .enemy-laser {
@@ -206,6 +278,57 @@
     }
 
 }
+
+.gun {
+
+    z-index: 500;
+    width: 1000px;
+    height: 700px;
+    background: url(../sprites/gun.png) no-repeat 50px 25px;
+    background-size: 120%;
+    position: absolute;
+//    top: 180px;
+//    left: 317px;
+
+    .sight {
+
+        opacity: 0.4;
+
+        .vertical-line {
+            position: absolute;
+            width: 3px;
+            height: 30px;
+            background-color: yellow;
+            left: 13px;
+            top: 0;
+        }
+
+        .horizontal-line {
+            position: absolute;
+            width: 30px;
+            height: 3px;
+            background-color: yellow;
+            left: 0;
+            top: 13px;
+        }
+
+    }
+
+}
+
+.mouseMovePlane {
+
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    z-index: 1000;
+
+    cursor: none;
+}
+
 
 @-webkit-keyframes laser-burning {
 

@@ -6,6 +6,16 @@ define(
     ],
     function ( app, Enemy, async ) {
 
+        var tunnelBodySize = {
+            width:  126,
+            height: 240
+        };
+
+        var tunnelSize = {
+            width:  200,
+            height: 240
+        };
+
         console.log( 'tunnel' );
 
         function getRandomInt( min, max ) {
@@ -16,32 +26,58 @@ define(
             .controller( 'TunnelController', [ '$scope', '$rootScope', 'tunnelService',
                 function ( $scope, $rootScope, tunnelService ) {
 
-                    $scope.safeApply = function(fn) {
+                    $scope.tunnelSize = tunnelSize;
+
+                    $scope.safeApply = function ( fn ) {
                         var phase = this.$root.$$phase;
-                        if(phase == '$apply' || phase == '$digest') {
-                            if(fn && (typeof(fn) === 'function')) {
+                        if ( phase == '$apply' || phase == '$digest' ) {
+                            if ( fn && (typeof(fn) === 'function') ) {
                                 fn();
                             }
                         } else {
-                            this.$apply(fn);
+                            this.$apply( fn );
                         }
                     };
 
                     $scope.tunnels = tunnelService.tunnels;
 
+                    $scope.shootZones = tunnelService.shootZones;
+
                     $scope.enemies = tunnelService.enemies;
 
-                    $rootScope.$on( 'updateEnemiesData', function(){
+                    $rootScope.$on( 'updateEnemiesData', function () {
 
                         $scope.enemies = tunnelService.enemies;
                         $scope.safeApply();
                         //console.log( '1' );
-                        
+
                     }, true );
 
                     $scope.getStyleByPos = function ( x, y ) {
                         return " top: " + y + "px; left: " + x + "px";
                     };
+
+                    /*$scope.getShootZoneStyle = function ( tunnelId ) {
+
+                     var shootZonePos = tunnelService.shootZones[ tunnelId ];
+                     var tunnelPosition
+
+                     var style = {
+
+                     top:  shootZonePos[ 0 ].y,
+                     left: shootZonePos[ 0 ].x,
+
+                     right: shootZonePos[ 1 ].x - tunnelService.tunnels[ tunnelId ].position.x - tunnelSize.x,
+                     bottom: shootZonePos[ 1 ].y - tunnelService.tunnels[ tunnelId ].position.y - tunnelSize.y
+
+                     };
+
+                     return "top: "+style.top+"px; " +
+                     "left: "+style.left+"px; " +
+                     "right: "+style.right+"px; " +
+                     "bottom: "+style.bottom+"px";
+
+                     };*/
 
                 } ] )
 
@@ -53,6 +89,8 @@ define(
 
                     function Tunnel( coords ) {
 
+                        var self = this;
+
                         this.position = {};
                         this.position.x = coords.x;
                         this.position.y = coords.y;
@@ -60,6 +98,28 @@ define(
                         this.enemy = new Enemy();
 
                         this.hey = '1';
+
+                        var offset = [
+                            {
+                                x: 45,
+                                y: -90
+                            },
+                            {
+                                x: -45,
+                                y: -210
+                            }
+                        ];
+
+                        this.shootZone = [
+                            { // first
+                                x: self.position.x + offset[ 0 ].x,
+                                y: self.position.y + offset[ 0 ].y
+                            },
+                            { // second
+                                x: self.position.x + tunnelSize.width + offset[ 1 ].x,
+                                y: self.position.y + tunnelSize.height + offset[ 1 ].y
+                            }
+                        ];
 
                     }
 
@@ -71,12 +131,22 @@ define(
                             timeBeforeStartShooting = 600,
                             timeToShoot = 1000;
 
-                        enemy.type = parseInt( Math.random() * 2 ) + 1;
+                        enemy.type = getRandomInt( 0, 9 );
 
-                        enemy.position = 'down';
+                        enemy.killed = false;
+
+
+                        enemy.position = 'up';
+                        enemy.availableToMove = true;
+
                         enemy.laserVisible = false;
 
-                        enemy.availableToMove = true;
+                        enemy.kill = function(){
+
+                            enemy.killed = true;
+                            $rootScope.$broadcast( 'updateEnemiesData' );
+
+                        };
 
                         enemy.togglePosition = function () {
 
@@ -86,7 +156,7 @@ define(
 
                         };
 
-                        enemy.look = function() {
+                        enemy.look = function () {
 
                             if ( enemy.availableToMove == false ) return false;
 
@@ -96,9 +166,9 @@ define(
                                 [
 
                                     // go to surface
-                                    function( scb ){
+                                    function ( scb ) {
 
-                                        if ( ! enemy.availableToMove ) scb( true ); // call error
+                                        if ( !enemy.availableToMove ) scb( true ); // call error
 
                                         enemy.availableToMove = false;
                                         enemy.position = 'up';
@@ -110,7 +180,7 @@ define(
                                     },
 
                                     // start shooting
-                                    function( scb ){
+                                    function ( scb ) {
 
                                         enemy.laserVisible = true;
 
@@ -121,7 +191,7 @@ define(
                                     },
 
                                     // stop shooting
-                                    function ( scb ){
+                                    function ( scb ) {
 
                                         enemy.laserVisible = false;
 
@@ -152,16 +222,14 @@ define(
                                     }
 
                                 ],
-                                function(){}
+                                function () {
+                                }
                             );
-
-
-
 
 
                         };
 
-                        setInterval( function(){
+                        setInterval( function () {
 
                             enemy.look();
 

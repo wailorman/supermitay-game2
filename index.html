@@ -2,6 +2,8 @@
 
 <head>
 
+    <meta charset="utf-8"/>
+
     <link rel="stylesheet" href="css/main.css"/>
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
 
@@ -11,56 +13,68 @@
 
 <body>
 
+<div ng-controller="ScreenController">
 
-<!-- screen -->
-<div class="screen">
+    <!-- screen -->
+    <div    class="screen"
+            ng-mousemove="moveGun( $event )">
 
-    <!-- tunnels group -->
-    <div ng-controller="TunnelController">
+        <!-- tunnels group -->
+        <div ng-controller="TunnelController">
 
-        <!-- tunnel -->
-        <div ng-repeat="( tunnelIndex, tunnel ) in tunnels"
-             ng-click="enemies[ tunnelIndex ].look()"
-             class="tunnel"
-             style=" {{ getStyleByPos( tunnel.position.x, tunnel.position.y ) }} ">
+            <!-- tunnel -->
+            <div ng-repeat="( tunnelIndex, tunnel ) in tunnels"
+                 ng-click="enemies[ tunnelIndex ].look()"
+                 class="tunnel"
+                 style=" {{ getStyleByPos( tunnel.position.x, tunnel.position.y ) }} ">
 
-            <div class="bg"></div>
-            <div class="way">
+                <div class="bg"></div>
+                <div class="way">
 
-                <!-- enemy in tunnel -->
-                <div class="enemy
-                type{{ enemies[ tunnelIndex ].type }}
-                {{ enemies[ tunnelIndex ].position }}"
-                        ng-click="enemies[ tunnelIndex ].startShooting()">
+                    <!-- enemy in tunnel -->
+                    <div class="enemy type{{ tunnel.enemy.type }} {{ tunnel.enemy.position }}"
+                            ng-class="{ 'killed': tunnel.enemy.killed }">
 
-                    <div class="enemy-laser laser{{ tunnelIndex }}"
-                            ng-class="{ 'invisible': ! enemies[ tunnelIndex ].laserVisible }">
-                        <div class="eye-point"></div>
-                        <div class="fire-point-container">
-                            <div class="fire-point"></div>
+                        <div class="enemy-laser laser{{ tunnelIndex }}"
+                             ng-class="{ 'invisible': ! tunnel.enemy.laserVisible }">
+                            <div class="eye-point"></div>
+                            <div class="fire-point-container">
+                                <div class="fire-point"></div>
+                            </div>
                         </div>
+
                     </div>
 
+
                 </div>
-
-
+                <div class="cover"></div>
 
             </div>
-            <div class="cover"></div>
 
         </div>
 
+        <div class="gun" style=" top: {{ gunPosition.y }}px; left: {{ gunPosition.x }}px;">
+            <div class="sight">
+                <div class="vertical-line"></div>
+                <div class="horizontal-line"></div>
+            </div>
+        </div>
+
+        <div class="shoot-zone"
+             ng-repeat="( tunnelId, tunnel ) in tunnels"
+             style="{{ getShootZoneStyle( tunnelId ) }}">
+
+        </div>
+
+        <div class="mouseMovePlane"
+                ng-click="shoot()">
+        </div>
+
+
+
     </div>
 
 </div>
-
-<div class="gun">
-    <div class="sight">
-        <div class="vertical-line"></div>
-        <div class="horizontal-line"></div>
-    </div>
-</div>
-
 
 </body>
 
