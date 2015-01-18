@@ -3,9 +3,9 @@ require.config( {
     //baseUrl: 'app',
 
     paths: {
-        'angular': 'bower_components/angular/angular',
-        'app':     'app/app',
-        'async': 'bower_components/async/lib/async',
+        'angular':       'bower_components/angular/angular',
+        'app':           'app/app',
+        'async':         'bower_components/async/lib/async',
         'angular-route': 'bower_components/angular-route/angular-route',
 
         'tunnel': 'app/objects/tunnel-object',
@@ -28,19 +28,18 @@ require.config( {
 
 } );
 
-define( [
-    'angular',
-    'app',
+require( [
+        'app',
 
-    'enemy',
-    'tunnel',
-    'screen'
+        'screen',
+        'enemy',
+        'tunnel'
+    ],
+    function () {
 
-], function ( angular ) {
+        console.log( 'im at main' );
+        angular.bootstrap( document, [ 'gameTwo' ] );
 
-    console.log( 'im at main' );
-
-    angular.bootstrap( document, [ 'gameTwo' ] );
-
-} );
+    }
+);
 

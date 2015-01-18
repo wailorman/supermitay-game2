@@ -5,12 +5,13 @@ module.exports = function ( grunt ) {
         requirejs: {
             compile: {
                 options: {
-                    baseUrl: '.',
-                    name: 'app',
-                    mainConfigFile: "./main.js",
-                    out:            "built/app.js",
+                    baseUrl:                '.',
+                    name:                   'main',
+                    mainConfigFile:         "./main.js",
+                    out:                    "app.build.js",
                     findNestedDependencies: true,
-                    include: [ 'bower_components/requirejs/require.js' ]
+                    include:                [ 'bower_components/requirejs/require.js' ],
+                    optimize:               'uglify'
                 }
             }
         }
