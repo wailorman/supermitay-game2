@@ -100,10 +100,29 @@ define( [
 
                 };
 
+                $scope.heals = screenService.heals;
+
+                $rootScope.$on( 'healsUpdated', function(){
+
+                    $scope.heals = screenService.heals;
+
+                } );
+
             } ] )
         .service( 'screenService', [ '$rootScope',
             function ( $rootScope ) {
 
+                var screenService = this;
+
+                screenService.heals = 100;
+
+                $rootScope.$on( 'laserShootToPlayer', function(){
+
+                    screenService.heals -= 7;
+                    //console.log( 'player hit! ' + screenService.heals );
+                    $rootScope.$broadcast( 'healsUpdated' );
+
+                } );
 
             } ] )
         .service( 'gunService', [ '$rootScope', 'tunnelService',

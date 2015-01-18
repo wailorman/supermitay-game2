@@ -109,8 +109,8 @@ define(
                         var enemyObject = this;
 
                         var timeToMove = 500,
-                            timeBeforeStartShooting = 400,
-                            timeToShoot = 500 + timeBeforeStartShooting;
+                            timeBeforeStartShooting = 350,
+                            timeToShoot = 700 + timeBeforeStartShooting;
 
                         enemy.shootZone = parentTunnel.shootZone;
 
@@ -120,6 +120,9 @@ define(
                         enemy.availableToMove = true;
 
                         enemy.laserVisible = false;
+
+
+
 
 
                         enemy.kill = function ( callback ) {
@@ -168,13 +171,31 @@ define(
 
                         };
 
+                        enemy.clearPlayerHitInterval = function () {
+
+                            if ( enemy.playerHitInterval ) return clearInterval( enemy.playerHitInterval );
+
+                        };
+
+                        enemy.startPlayerHitInterval = function () {
+
+                            enemy.playerHitInterval = setInterval( function(){
+
+                                $rootScope.$broadcast( 'laserShootToPlayer' );
+
+                            }, 180 );
+
+                        };
+
                         enemy.startShooting = function () {
 
-                            if ( enemy.position != 'up' ) return false;
+                            if ( enemy.position != 'up' || enemy.killedMark == true ) return false;
 
                             enemy.availableToMove = false;
                             $rootScope.$broadcast( 'updateEnemiesData' );
                             enemy.laserVisible = true;
+
+                            enemy.startPlayerHitInterval();
 
                         };
 
@@ -183,6 +204,8 @@ define(
                             enemy.laserVisible = false;
                             $rootScope.$broadcast( 'updateEnemiesData' );
                             enemy.availableToMove = true;
+
+                            enemy.clearPlayerHitInterval();
 
                         };
 
@@ -309,7 +332,6 @@ define(
                         // -------------------------------------------------
                         // Constructor
                         // -------------------------------------------------
-
 
                         enemy.reSpawn();
                         enemy.restartLookInterval();

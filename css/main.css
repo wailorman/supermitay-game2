@@ -39,11 +39,12 @@ body {
   height: inherit;
   background-image: url(../sprites/tunnel-cover.png);
   background-size: contain;
-  opacity: 0.6;
+  opacity: 1;
 }
 .shoot-zone {
   position: absolute;
-  background-color: rgba(0, 0, 255, 0.3);
+  background-color: blue;
+  opacity: 0;
 }
 .enemy {
   position: absolute;
