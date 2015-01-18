@@ -133,6 +133,8 @@ define(
                             enemy.killedMark = true;
                             $rootScope.$broadcast( 'updateEnemiesData' );
 
+                            $rootScope.$broadcast( 'enemyWasKilled' );
+
                             callback();
 
                         };

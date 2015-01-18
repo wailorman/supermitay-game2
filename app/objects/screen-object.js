@@ -109,8 +109,8 @@ define( [
                 } );
 
             } ] )
-        .service( 'screenService', [ '$rootScope',
-            function ( $rootScope ) {
+        .service( 'screenService', [ '$rootScope', '$window',
+            function ( $rootScope, $window ) {
 
                 var screenService = this;
 
@@ -118,9 +118,37 @@ define( [
 
                 $rootScope.$on( 'laserShootToPlayer', function(){
 
+                    if ( screenService.heals <= 0 ){
+                        screenService.restartLevel();
+                    }
+
                     screenService.heals -= 7;
                     //console.log( 'player hit! ' + screenService.heals );
                     $rootScope.$broadcast( 'healsUpdated' );
+
+                } );
+
+                screenService.restartLevel = function () {
+                    console.log( 'goto restart level' );
+                    $window.location.reload();
+                };
+
+
+                screenService.goToNextLevel = function () {
+                    console.log( 'goto next level' );
+                    $window.location.reload();
+                };
+
+                screenService.enemiesKilled = 0;
+
+                $rootScope.$on( 'enemyWasKilled', function(){
+
+                    console.log( 'enemy was killed' );
+                    screenService.enemiesKilled += 1;
+
+                    if ( screenService.enemiesKilled === 30 ) {
+                        screenService.goToNextLevel();
+                    }
 
                 } );
 
@@ -150,6 +178,8 @@ define( [
                     $rootScope.$broadcast( 'playerShooted', shootPoint );
 
                 };
+
+
 
             } ] );
 

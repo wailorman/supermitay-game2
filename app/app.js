@@ -2,7 +2,8 @@ define( 'app', [
 
         //'./services/screen-service'
 
-        'angular'
+        'angular',
+        'angular-route'
 
     ],
     function ( angular ) {
@@ -12,7 +13,7 @@ define( 'app', [
 
         console.log( 'im at app' );
 
-        return angular.module( 'gameTwo', [] );
+        return angular.module( 'gameTwo', [ 'ngRoute' ] );
 
     } );
 

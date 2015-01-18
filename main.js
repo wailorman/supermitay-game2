@@ -3,13 +3,14 @@ require.config( {
     //baseUrl: 'app',
 
     paths: {
-        'angular': '../bower_components/angular/angular',
-        'app':     '../app/app',
-        'async': '../bower_components/async/lib/async',
+        'angular': 'bower_components/angular/angular',
+        'app':     'app/app',
+        'async': 'bower_components/async/lib/async',
+        'angular-route': 'bower_components/angular-route/angular-route',
 
-        'tunnel': '../app/objects/tunnel-object',
-        'enemy':  '../app/objects/enemy-object',
-        'screen': '../app/objects/screen-object'
+        'tunnel': 'app/objects/tunnel-object',
+        'enemy':  'app/objects/enemy-object',
+        'screen': 'app/objects/screen-object'
     },
 
     shim: {
