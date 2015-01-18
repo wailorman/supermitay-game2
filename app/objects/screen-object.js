@@ -136,7 +136,7 @@ define( [
 
                 screenService.goToNextLevel = function () {
                     console.log( 'goto next level' );
-                    $window.location.reload();
+                    $window.location.href = 'http://mircheg.ru/supermitay/video3';
                 };
 
                 screenService.enemiesKilled = 0;
@@ -146,7 +146,7 @@ define( [
                     console.log( 'enemy was killed' );
                     screenService.enemiesKilled += 1;
 
-                    if ( screenService.enemiesKilled === 30 ) {
+                    if ( screenService.enemiesKilled === 50 ) {
                         screenService.goToNextLevel();
                     }
 
