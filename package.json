@@ -14,7 +14,7 @@
     "grunt-html-build": "^0.3.2"
   },
   "scripts": {
-    "posinstall": "npm i && bower install && grunt default",
+    "postinstall": "npm i && bower install && grunt default",
     "build": "npm i && bower install && grunt default"
   }
 }
