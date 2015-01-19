@@ -12,5 +12,9 @@
     "grunt-contrib-less": "^1.0.0",
     "grunt-contrib-requirejs": "^0.4.4",
     "grunt-html-build": "^0.3.2"
+  },
+  "scripts": {
+    "posinstall": "npm i && bower install && grunt default",
+    "build": "npm i && bower install && grunt default"
   }
 }
