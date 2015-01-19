@@ -119,6 +119,8 @@ define( [
 
                 $scope.score = 0;
 
+                $scope.requiredScore = screenService.requiredScore;
+
                 $rootScope.$on( 'showFail', function () {
 
                     $scope.showFail = true;
@@ -165,6 +167,8 @@ define( [
             function ( $rootScope, $window ) {
 
                 var screenService = this;
+
+                screenService.requiredScore = 40;
 
                 screenService.heals = 100;
 
@@ -229,7 +233,7 @@ define( [
                     console.log( 'enemy was killed ' + screenService.score );
 
 
-                    if ( screenService.score === 40 ) {
+                    if ( screenService.score === screenService.requiredScore ) {
                         screenService.goToNextLevel();
                     }
 

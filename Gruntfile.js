@@ -19,6 +19,7 @@ module.exports = function ( grunt ) {
             sprites: {
                 src:  'css/sprites/*',
                 dest: 'built/sprites',
+                flatten: true,
                 expand: true
             },
             music:   {
