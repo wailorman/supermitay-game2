@@ -18,7 +18,8 @@ module.exports = function ( grunt ) {
         copy:      {
             sprites: {
                 src:  'css/sprites/*',
-                dest: 'built/'
+                dest: 'built/sprites',
+                expand: true
             },
             music:   {
                 src:  'bg.mp3',
