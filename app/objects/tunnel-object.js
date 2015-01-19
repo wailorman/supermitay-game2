@@ -186,7 +186,7 @@ define(
 
                                 $rootScope.$broadcast( 'laserShootToPlayer' );
 
-                            }, 180 );
+                            }, 250 );
 
                         };
 

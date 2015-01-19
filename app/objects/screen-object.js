@@ -102,6 +102,14 @@ define( [
 
                 $scope.heals = screenService.heals;
 
+                $scope.enemiesKilled = 0;
+
+                $rootScope.$on( 'enemyWasKilled', function(){
+
+                    $scope.enemiesKilled =screenService.enemiesKilled;
+
+                });
+
                 $rootScope.$on( 'healsUpdated', function(){
 
                     $scope.heals = screenService.heals;
@@ -122,7 +130,7 @@ define( [
                         screenService.restartLevel();
                     }
 
-                    screenService.heals -= 7;
+                    screenService.heals -= 4;
                     //console.log( 'player hit! ' + screenService.heals );
                     $rootScope.$broadcast( 'healsUpdated' );
 
@@ -147,7 +155,7 @@ define( [
                     console.log( 'enemy was killed ' + screenService.enemiesKilled );
 
 
-                    if ( screenService.enemiesKilled === 50 ) {
+                    if ( screenService.enemiesKilled === 40 ) {
                         screenService.goToNextLevel();
                     }
 
