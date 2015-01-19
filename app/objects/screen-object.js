@@ -59,6 +59,10 @@ define( [
 
                 $scope.gunPosition = {};
 
+                $scope.isBlackBackground = false;
+
+                $scope.showFail = false;
+
                 $scope.tunnels = tunnelService.tunnels;
 
                 $scope.moveGun = function ( $event ) {
@@ -115,6 +119,20 @@ define( [
 
                 $scope.score = 0;
 
+                $rootScope.$on( 'showFail', function () {
+
+                    $scope.showFail = true;
+                    $scope.safeApply();
+
+                } );
+
+                $rootScope.$on( 'becomeBlack', function () {
+
+                    $scope.isBlackBackground = true;
+                    $scope.safeApply();
+
+                } );
+
                 $rootScope.$on( 'enemyWasKilled', function () {
 
                     $scope.score = screenService.score;
@@ -164,13 +182,43 @@ define( [
 
                 screenService.restartLevel = function () {
                     console.log( 'goto restart level' );
-                    $window.location.reload();
+
+                    screenService.showFail();
+                    $rootScope.$broadcast( 'stopEnemiesShooting' );
+
+                    setTimeout( function(){
+
+                        $window.location.reload();
+
+                    }, 3500 );
                 };
 
+                screenService.showFail = function () {
+
+                    $rootScope.$broadcast( 'showFail' );
+
+                };
+
+                screenService.becomeBlack = function () {
+
+                    $rootScope.$broadcast( 'becomeBlack' );
+
+                };
 
                 screenService.goToNextLevel = function () {
+
                     console.log( 'goto next level' );
-                    $window.location.href = 'http://mircheg.ru/supermitay/video3';
+
+                    $rootScope.$broadcast( 'stopEnemiesShooting' );
+
+                    screenService.becomeBlack();
+
+                    setTimeout( function () {
+
+                        $window.location.href = 'http://mircheg.ru/supermitay/video3';
+
+                    }, 5000 );
+
                 };
 
                 screenService.score = 0;

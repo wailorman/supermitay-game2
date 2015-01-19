@@ -25,6 +25,8 @@
 
 <div ng-controller="ScreenController">
 
+    <div class="become-black-plane" ng-class="{ 'black': isBlackBackground }"></div>
+
     <!-- screen -->
     <div    class="screen"
             ng-mousemove="moveGun( $event )">
@@ -79,7 +81,7 @@
         <div class="heals-line-container">
 
             <div class="heals-line"
-                 style="width: {{ heals }}%"
+                 style="width: {{ heals >= 0 ? heals : 0 }}%"
                     ng-class="{ 'shooted': isShootedHealsLine }">
 
             </div>
@@ -90,7 +92,11 @@
             {{ score }}
         </div>
 
-        <div class="mouseMovePlane"
+        <div class="fail-plane" ng-class="{ 'show': showFail }">
+            ПОТРАЧЕНО!
+        </div>
+
+        <div class="mouse-move-plane"
                 ng-click="callShootEvent()">
         </div>
 

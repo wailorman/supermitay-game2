@@ -16,6 +16,7 @@ body {
     height: 640px;
     position: relative;
     overflow: hidden;
+
 }
 
 @tunnelWidth: 200px;
@@ -354,7 +355,7 @@ body {
 
 }
 
-.mouseMovePlane {
+.mouse-move-plane {
 
     position: absolute;
     top: 0;
@@ -367,6 +368,48 @@ body {
     cursor: none;
 }
 
+.become-black-plane {
+
+    transition: background 5s;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+
+
+
+    &.black {
+
+        background: black;
+
+    }
+
+}
+
+.fail-plane {
+    position: absolute;
+    background: rgba(158, 11, 11, 0.65);
+    width: 100%;
+    top: 227px;
+    height: 150px;
+    vertical-align: middle;
+    font: 77pt 'Arial';
+    font-weight: 600;
+    color: white;
+    text-align: center;
+    padding-top: 17px;
+    z-index: 900;
+
+    opacity: 0;
+
+    transition: opacity 2s;
+
+    &.show {
+
+        opacity: 1;
+
+    }
+}
 
 @-webkit-keyframes laser-burning {
 

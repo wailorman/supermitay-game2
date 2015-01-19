@@ -7,18 +7,18 @@ define(
     function ( app, Enemy, async ) {
 
         var tunnelBodySize = {
-            width:  126,
+            width: 126,
             height: 240
         };
 
         var tunnelSize = {
-            width:  200,
+            width: 200,
             height: 240
         };
 
         console.log( 'tunnel' );
 
-        function getRandomInt( min, max ) {
+        function getRandomInt ( min, max ) {
             return Math.floor( Math.random() * (max - min + 1) ) + min;
         }
 
@@ -58,14 +58,12 @@ define(
                     };
 
                 } ] )
-
-
             .service( 'tunnelService', [ '$rootScope',
                 function ( $rootScope ) {
 
                     var tunnelService = this;
 
-                    function Tunnel( coords ) {
+                    function Tunnel ( coords ) {
 
                         var self = this;
                         var tunnelObject = this;
@@ -103,7 +101,7 @@ define(
 
                     }
 
-                    function Enemy( parentTunnel ) {
+                    function Enemy ( parentTunnel ) {
 
                         var enemy = this;
                         var enemyObject = this;
@@ -120,9 +118,6 @@ define(
                         enemy.availableToMove = true;
 
                         enemy.laserVisible = false;
-
-
-
 
 
                         enemy.kill = function ( callback ) {
@@ -182,7 +177,7 @@ define(
 
                         enemy.startPlayerHitInterval = function () {
 
-                            enemy.playerHitInterval = setInterval( function(){
+                            enemy.playerHitInterval = setInterval( function () {
 
                                 $rootScope.$broadcast( 'laserShootToPlayer' );
 
@@ -217,7 +212,7 @@ define(
                             var shootZone = enemy.shootZone;
 
                             return shootPoint.x >= shootZone[ 0 ].x && shootPoint.y >= shootZone[ 0 ].y &&
-                                   shootPoint.x <= shootZone[ 1 ].x && shootPoint.y <= shootZone[ 1 ].y;
+                                shootPoint.x <= shootZone[ 1 ].x && shootPoint.y <= shootZone[ 1 ].y;
 
 
                         };
@@ -328,7 +323,10 @@ define(
 
                         enemy.clearLookInterval = function () {
 
-                            if ( enemy.lookInterval ) clearInterval( enemy.lookInterval );
+                            if ( enemy.lookInterval ) {
+                                enemy.stopShooting();
+                                clearInterval( enemy.lookInterval );
+                            }
 
                         };
 
@@ -339,6 +337,18 @@ define(
                         enemy.reSpawn();
                         enemy.restartLookInterval();
 
+
+                        // -------------------------------------------------
+
+                        // -------------------------------------------------
+                        // Destructor
+                        // -------------------------------------------------
+
+                        $rootScope.$on( 'stopEnemiesShooting', function () {
+
+                            enemy.clearLookInterval();
+
+                        } );
 
                         // -------------------------------------------------
 
