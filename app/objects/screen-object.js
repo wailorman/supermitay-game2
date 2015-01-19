@@ -22,9 +22,9 @@ define( [
         }
         else if ( mouseEvent.clientX || mouseEvent.clientY ) {
             result.x = mouseEvent.clientX + document.body.scrollLeft +
-                       document.documentElement.scrollLeft;
+            document.documentElement.scrollLeft;
             result.y = mouseEvent.clientY + document.body.scrollTop +
-                       document.documentElement.scrollTop;
+            document.documentElement.scrollTop;
         }
 
         if ( mouseEvent.target ) {
@@ -81,7 +81,18 @@ define( [
 
                 };
 
-                $scope.callShootEvent = function ( ) {
+                $scope.safeApply = function ( fn ) {
+                    var phase = this.$root.$$phase;
+                    if ( phase == '$apply' || phase == '$digest' ) {
+                        if ( fn && (typeof(fn) === 'function') ) {
+                            fn();
+                        }
+                    } else {
+                        this.$apply( fn );
+                    }
+                };
+
+                $scope.callShootEvent = function () {
 
                     return gunService.callShootEvent();
 
@@ -102,15 +113,30 @@ define( [
 
                 $scope.heals = screenService.heals;
 
-                $scope.enemiesKilled = 0;
+                $scope.score = 0;
 
-                $rootScope.$on( 'enemyWasKilled', function(){
+                $rootScope.$on( 'enemyWasKilled', function () {
 
-                    $scope.enemiesKilled =screenService.enemiesKilled;
+                    $scope.score = screenService.score;
 
-                });
+                } );
 
-                $rootScope.$on( 'healsUpdated', function(){
+                $rootScope.$on( 'laserShootToPlayer', function () {
+
+                    $scope.heals = screenService.heals;
+                    $scope.isShootedHealsLine = true;
+                    $scope.safeApply();
+
+                    setTimeout( function () {
+
+                        $scope.isShootedHealsLine = false;
+                        $scope.safeApply();
+
+                    }, 400 );
+
+                } );
+
+                $rootScope.$on( 'healsUpdated', function () {
 
                     $scope.heals = screenService.heals;
 
@@ -124,9 +150,9 @@ define( [
 
                 screenService.heals = 100;
 
-                $rootScope.$on( 'laserShootToPlayer', function(){
+                $rootScope.$on( 'laserShootToPlayer', function () {
 
-                    if ( screenService.heals <= 0 ){
+                    if ( screenService.heals <= 0 ) {
                         screenService.restartLevel();
                     }
 
@@ -147,15 +173,15 @@ define( [
                     $window.location.href = 'http://mircheg.ru/supermitay/video3';
                 };
 
-                screenService.enemiesKilled = 0;
+                screenService.score = 0;
 
-                $rootScope.$on( 'enemyWasKilled', function(){
+                $rootScope.$on( 'enemyWasKilled', function () {
 
-                    screenService.enemiesKilled += 1;
-                    console.log( 'enemy was killed ' + screenService.enemiesKilled );
+                    screenService.score += 1;
+                    console.log( 'enemy was killed ' + screenService.score );
 
 
-                    if ( screenService.enemiesKilled === 40 ) {
+                    if ( screenService.score === 40 ) {
                         screenService.goToNextLevel();
                     }
 
@@ -187,7 +213,6 @@ define( [
                     $rootScope.$broadcast( 'playerShooted', shootPoint );
 
                 };
-
 
 
             } ] );

@@ -15,6 +15,6 @@
   },
   "scripts": {
     "postinstall": "bower install && grunt default ",
-    "build": "bower install && grunt default "
+    "build": "grunt default "
   }
 }

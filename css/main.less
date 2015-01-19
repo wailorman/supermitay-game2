@@ -318,13 +318,39 @@ body {
 
 }
 
-.heals-line {
+.score {
 
-    height: 15px;
-    background: red;
+    font: 100pt Arial;
+    text-shadow: 7px 2px 0 white;
+    color: red;
     position: absolute;
-    top: 0;
-    left: 0;
+    right: 40px;
+    bottom: 20px;
+    z-index: 600;
+
+}
+
+.heals-line-container {
+
+    .heals-line {
+
+        height: 30px;
+        background: red;
+        opacity: 0.5;
+//        position: absolute;
+        top: 0;
+        left: 0;
+
+        transition: opacity 0.3s;
+
+        &.shooted {
+            opacity: 1;
+        }
+
+    }
+
+    width: 100%;
+    padding: 10px 20px 0 20px;
 
 }
 

@@ -76,11 +76,18 @@
 
         </div>
 
-        <div class="heals-line"
-                style="width: {{ heals }}%">
+        <div class="heals-line-container">
 
-            {{ enemiesKilled }}
+            <div class="heals-line"
+                 style="width: {{ heals }}%"
+                    ng-class="{ 'shooted': isShootedHealsLine }">
 
+            </div>
+
+        </div>
+
+        <div class="score">
+            {{ score }}
         </div>
 
         <div class="mouseMovePlane"
